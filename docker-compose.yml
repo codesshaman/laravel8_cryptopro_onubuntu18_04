@@ -7,20 +7,20 @@ services:
       - ./laravel:/var/www/
       - ./nginx/conf.d:/etc/nginx/conf.d/
     ports:
-      - "8999:80"
+      - "80:80"
     tty:  true
     restart: unless-stopped
-    container_name: nginx_lar8app
+    container_name: nginx_cpro
     depends_on:
-      - lar8app
+      - lar8cpro
 
-  lar8app:
+  lar8cpro:
     build:
       context: .
-      dockerfile: app/Dockerfile
+      dockerfile: Dockerfile
     tty:  true
     user: 1000:1000
     restart: unless-stopped
     volumes:
       - ./laravel:/var/www
-    container_name: lar8app
+    container_name: lar8cpro
