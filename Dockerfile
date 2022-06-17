@@ -34,5 +34,5 @@ RUN cd /tmp/linux-amd64_deb && chmod +x install.sh && ./install.sh && \
     cp /opt/cprocsp/src/phpcades/libphpcades.so $(php -i | grep 'extension_dir => ' | awk '{print $3}')/phpcades.so && \
     ln -s /opt/cprocsp/src/phpcades/libphpcades.so $(php -i | grep 'extension_dir => ' | awk '{print $3}')/libcppcades.so && \
     echo 'extension=phpcades.so' >> /etc/php/7.2/cli/php.ini && cd /tmp/php7_sources && \
-    dpkg -i libpq5_14.4-1.pgdg18.04+1_amd64.deb && dpkg -i php7.2-pgsql_7.2.24-0ubuntu0.18.04.12_amd64.deb \
+    dpkg -i libpq5_14.4-1.pgdg18.04+1_amd64.deb && dpkg -i php7.2-pgsql_7.2.24-0ubuntu0.18.04.12_amd64.deb && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
