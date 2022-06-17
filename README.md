@@ -8,19 +8,12 @@ Clone: git clone https://github.com/codesshaman/minimal_docker_laravel_nginx_php
 GO TO FOLDER:
 cd minimal_docker_laravel_nginx_php
 
-CREATE LARAVEL:
-composer create-project laravel/laravel laravel
+INSTALL LARAVEL:
+ 
+chmod +x start.sh
+./start.sh
 
-COMPOSER UPDATE:
-cd laravel
-composer update
-cd ../
-
-BUILD (first start):
-docker-compose up -d --build
-
-RUN:
-docker-compose up -d
+Enter laravel port number and enjoy!
 
 STOP:
 docker-compose down
@@ -29,4 +22,4 @@ CONNECT:
 docker exec -it nginx_laravel sh
 
 OPEN:
-http://localhost/
+http://localhost:your_port/

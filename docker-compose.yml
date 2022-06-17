@@ -7,7 +7,7 @@ services:
       - ./laravel:/var/www/
       - ./nginx/conf.d:/etc/nginx/conf.d/
     ports:
-      - "83:80"
+      - "80:80"
     tty:  true
     restart: unless-stopped
     container_name: nginx_cpro

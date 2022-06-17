@@ -40,3 +40,5 @@ RUN cd /tmp/linux-amd64_deb && chmod +x install.sh && ./install.sh && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 USER 1000
+
+EXPOSE 80
