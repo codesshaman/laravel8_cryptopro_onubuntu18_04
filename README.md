@@ -13,7 +13,8 @@ composer create-project laravel/laravel laravel
 
 COMPOSER UPDATE:
 cd laravel
-composer-update
+composer update
+cd ../
 
 BUILD (first start):
 docker-compose up -d --build
