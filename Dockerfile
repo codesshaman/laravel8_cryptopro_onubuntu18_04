@@ -54,7 +54,7 @@ RUN cd /tmp/linux-amd64_deb && chmod +x install.sh && ./install.sh && \
     dpkg -i libpq5_14.4-1.pgdg18.04+1_amd64.deb && dpkg -i php7.2-pgsql_7.2.24-0ubuntu0.18.04.12_amd64.deb && \
     cd /tmp/php7_fpm && dpkg -i libapparmor1_2.12-4ubuntu5_amd64.deb && dpkg -i php7.2-common_7.2.3-1ubuntu1_amd64.deb && \
     dpkg -i php7.2-fpm_7.2.3-1ubuntu1_amd64.deb && dpkg -i php-fpm_7.2+60ubuntu1_all.deb && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && service php7.2-fpm start
 
 # Переключаюсь на созданного пользователя и открываю рабочий порт:
 
