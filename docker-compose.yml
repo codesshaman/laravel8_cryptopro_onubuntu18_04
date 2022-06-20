@@ -6,8 +6,9 @@ services:
     volumes:
       - ./laravel:/var/www/
       - ./nginx/conf.d:/etc/nginx/conf.d/
+      - ./nginx/logs:/var/log/nginx/
     ports:
-      - "83:80"
+      - "80:8080"
     tty:  true
     restart: unless-stopped
     container_name: nginx_cpro
