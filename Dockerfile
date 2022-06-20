@@ -60,4 +60,4 @@ RUN cd /tmp/linux-amd64_deb && chmod +x install.sh && ./install.sh && \
 
 USER user
 
-EXPOSE 80
+EXPOSE 8080
