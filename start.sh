@@ -1,6 +1,6 @@
 #!/bin/bash
 USER_ID=$(id -u)
-sed -i "s/USER 1000/USER ${USER_ID}/g" Dockerfile
+sed -i "s/USER_ID=1000/USER_ID=${USER_ID}/g" Dockerfile
 read -p "Введите порт для laravel: " LARAVEL_PORT
 sed -i "s/80:80/${LARAVEL_PORT}:80/g" docker-compose.yml
 sed -i "s/1000:1000/${USER_ID}:${USER_ID}/g" docker-compose.yml
