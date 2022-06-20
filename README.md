@@ -1,12 +1,11 @@
 # laravel + docker configuration
-Minimal docker container image (219 MB): laravel with nginx and php-fpm without bd
 
 Your need docker and docker-compose in your operation system.
 
-Clone: git clone https://github.com/codesshaman/minimal_docker_laravel_nginx_php.git
+Clone: git clone https://github.com/codesshaman/laravel8_cryptopro.git
 
 GO TO FOLDER:
-cd minimal_docker_laravel_nginx_php
+cd laravel8_cryptopro
 
 INSTALL LARAVEL:
  
@@ -19,7 +18,7 @@ STOP:
 docker-compose down
 
 CONNECT:
-docker exec -it nginx_laravel sh
+docker exec -it container_id sh
 
 OPEN:
 http://localhost:your_port/
