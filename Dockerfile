@@ -20,7 +20,7 @@ RUN apt update && \
     curl mc autoconf tar \
     libxml2-dev nano gcc \
     libsqlite3-dev sqlite3 \
-    make g++ patch g++-6 php-dev
+    make g++ patch g++-6 php-dev php-fpm
 
 # Устанавливаю рабочий каталог и копирую все нужные файлы:
 
@@ -50,16 +50,32 @@ RUN cd /tmp/linux-amd64_deb && chmod +x install.sh && ./install.sh && \
     eval `/opt/cprocsp/src/doxygen/CSP/../setenv.sh --64` && make -f Makefile.unix && \
     cp /opt/cprocsp/src/phpcades/libphpcades.so $(php -i | grep 'extension_dir => ' | awk '{print $3}')/phpcades.so && \
     ln -s /opt/cprocsp/src/phpcades/libphpcades.so $(php -i | grep 'extension_dir => ' | awk '{print $3}')/libcppcades.so && \
-    echo 'extension=phpcades.so' >> /etc/php/7.2/cli/php.ini && cd /tmp/php7_sources && \
-    dpkg -i libpq5_14.4-1.pgdg18.04+1_amd64.deb && dpkg -i php7.2-pgsql_7.2.24-0ubuntu0.18.04.12_amd64.deb && \
-    cd /tmp/php7_fpm && dpkg -i libapparmor1_2.12-4ubuntu5_amd64.deb && dpkg -i php7.2-common_7.2.3-1ubuntu1_amd64.deb && \
-    dpkg -i php7.2-fpm_7.2.3-1ubuntu1_amd64.deb && dpkg -i php-fpm_7.2+60ubuntu1_all.deb && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && service php7.2-fpm start
+    echo 'extension=phpcades.so' >> /etc/php/7.2/cli/php.ini
+    
+# Запускаю php-fpm:
 
-# Переключаюсь на созданного пользователя и открываю рабочий порт:
+# RUN apt install php-fpm && mkdir /run/php && service php7.2-fpm start && chown -R www-data:www-data /run/php
+
+# ENTRYPOINT ["service", "php7.2-fpm", "start"]
 
 USER user
 
+# CMD ["php7.2-fpm","-F"]
+
+
+    # chmod 666 /var/log/php7.2-fpm.log && service php7.2-fpm start
+    # && chmod 666 /var/log/php7.2-fpm.log
+    # && service php7.2-fpm start
+    # cd /tmp/php7_sources && \
+    # dpkg -i libpq5_14.4-1.pgdg18.04+1_amd64.deb && dpkg -i php7.2-pgsql_7.2.24-0ubuntu0.18.04.12_amd64.deb && \
+    # cd /tmp/php7_fpm && dpkg -i libapparmor1_2.12-4ubuntu5_amd64.deb && dpkg -i php7.2-common_7.2.3-1ubuntu1_amd64.deb && \
+    # dpkg -i php7.2-fpm_7.2.3-1ubuntu1_amd64.deb && dpkg -i php-fpm_7.2+60ubuntu1_all.deb
+    # rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && service php7.2-fpm start
+
+# Переключаюсь на созданного пользователя и открываю рабочий порт:
+
+# USER user
+
 EXPOSE 8888
 
-# CMD ["php-fpm"]
+# CMD ["php-fpm","-F"]
