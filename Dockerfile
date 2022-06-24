@@ -21,9 +21,7 @@ RUN apt update && apt install -y \
     sqlite3 g++-6 php-dev sqlite3 \
     curl mc autoconf tar patch \
     libxml2-dev nano gcc g++ \
-    libsqlite3-dev libpq-dev
-    
-    # php-fpm
+    libsqlite3-dev libpq-dev php-fpm
 
 # Устанавливаю рабочий каталог и копирую все нужные файлы:
 
@@ -79,7 +77,19 @@ RUN rm /opt/cprocsp/src/phpcades/Makefile.unix && \
     eval `/opt/cprocsp/src/doxygen/CSP/../setenv.sh --64` && make -f Makefile.unix && \
     cp /opt/cprocsp/src/phpcades/libphpcades.so $(php -i | grep 'extension_dir => ' | awk '{print $3}')/phpcades.so && \
     ln -s /opt/cprocsp/src/phpcades/libphpcades.so $(php -i | grep 'extension_dir => ' | awk '{print $3}')/libcppcades.so && \
+    echo 'extension=libphpcades.so' >> /etc/php/7.2/mods-available/libphpcades.ini && \
+    ln -s /etc/php/7.2/mods-available/libphpcades.ini /etc/php/7.2/fpm/conf.d && \
+    ln -s /etc/php/7.2/mods-available/libphpcades.ini /etc/php/7.2/cli/conf.d && \
     echo 'extension=phpcades.so' >> /etc/php/7.2/cli/php.ini && docker-php-source delete
+
+CMD ["sudo","/etc/init.d/php7.2-fpm","start"]
+
+# CMD ["php7.2-fpm","-F"]
+# CMD service php7.2-fpm restart
+
+# ENTRYPOINT ["/opt/cprocsp/bin/amd64/certmgr", "-inst", "-store", "mroot", "-file", "/tmp/certificates/4BC6DC14D97010C41A26E058AD851F81C842415A.cer"]
+
+# ENTRYPOINT ["/opt/cprocsp/bin/amd64/certmgr", "-inst", "-store", "mroot", "-file", "/tmp/certificates/8CAE88BBFD404A7A53630864F9033606E1DC45E2.cer"]
 
 # RUN docker-php-ext-install pgsql
 
