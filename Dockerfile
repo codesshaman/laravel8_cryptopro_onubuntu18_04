@@ -6,6 +6,8 @@ ENV TZ=Europe/Moscow
 
 ENV USER_ID=1000
 
+ENV PASSWD=1\n1
+
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Переключаюсь на суперпользователя:
@@ -15,12 +17,12 @@ USER root
 # Устанавливаю весь необходимый софт:
 
 RUN apt update && \
-    apt install -y wget \
-    libboost-dev sqlite3 \
-    curl mc autoconf tar \
-    libxml2-dev nano gcc \
-    libsqlite3-dev sqlite3 \
-    make g++ patch g++-6 php-dev php-fpm
+    apt install -y wget sudo \
+    libboost-dev sqlite3 g++-6 \
+    curl mc autoconf tar patch\
+    libxml2-dev nano gcc g++ \
+    libsqlite3-dev sqlite3 make \
+    php-dev php-fpm
 
 # Устанавливаю рабочий каталог и копирую все нужные файлы:
 
@@ -31,7 +33,9 @@ COPY ./sources .
 # Создаю пользователя с тем же UID, что и в системе:
 
 RUN groupadd user && useradd --create-home user -g user && \
-    sed -i "s/user:x:1000:1000/user:x:${USER_ID}:${USER_ID}/g" /etc/passwd
+    sed -i "s/user:x:1000:1000/user:x:${USER_ID}:${USER_ID}/g" /etc/passwd && \
+    echo "user    ALL=(ALL:ALL) ALL" >> /etc/sudoers
+    # echo ${PASSWD} | passwd user --stdin
 
 # Устанавливаю КриптоПРО:
 
@@ -56,7 +60,9 @@ RUN cd /tmp/linux-amd64_deb && chmod +x install.sh && ./install.sh && \
 
 RUN apt install php-fpm && mkdir /run/php && service php7.2-fpm start && chmod -R a+x /run/php
 
-# CMD ["service", "php7.2-fpm", "start"]
+CMD ["sudo", "service", "php7.2-fpm", "start"]
+
+ENTRYPOINT ["sudo", "service", "php7.2-fpm", "start"]
 
 # USER user
 
@@ -78,4 +84,5 @@ RUN apt install php-fpm && mkdir /run/php && service php7.2-fpm start && chmod -
 
 EXPOSE 8888
 
-# CMD ["php7.2-fpm","-F"]
+# Проверка:
+# php --re php_CPCSP
