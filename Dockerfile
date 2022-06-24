@@ -54,11 +54,11 @@ RUN cd /tmp/linux-amd64_deb && chmod +x install.sh && ./install.sh && \
     
 # Запускаю php-fpm:
 
-# RUN apt install php-fpm && mkdir /run/php && service php7.2-fpm start && chown -R www-data:www-data /run/php
+RUN apt install php-fpm && mkdir /run/php && service php7.2-fpm start && chmod -R a+x /run/php
 
-# ENTRYPOINT ["service", "php7.2-fpm", "start"]
+# CMD ["service", "php7.2-fpm", "start"]
 
-USER user
+# USER user
 
 # CMD ["php7.2-fpm","-F"]
 
@@ -78,4 +78,4 @@ USER user
 
 EXPOSE 8888
 
-# CMD ["php-fpm","-F"]
+# CMD ["php7.2-fpm","-F"]
