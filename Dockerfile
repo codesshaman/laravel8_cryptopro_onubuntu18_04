@@ -6,8 +6,6 @@ ENV TZ=Europe/Moscow
 
 ENV USER_ID=1000
 
-ENV PASSWD=1\n1
-
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Переключаюсь на суперпользователя:
@@ -35,7 +33,6 @@ COPY ./sources .
 RUN groupadd user && useradd --create-home user -g user && \
     sed -i "s/user:x:1000:1000/user:x:${USER_ID}:${USER_ID}/g" /etc/passwd && \
     echo "user    ALL=(ALL:ALL) ALL" >> /etc/sudoers
-    # echo ${PASSWD} | passwd user --stdin
 
 # Устанавливаю КриптоПРО:
 
@@ -55,18 +52,17 @@ RUN cd /tmp/linux-amd64_deb && chmod +x install.sh && ./install.sh && \
     cp /opt/cprocsp/src/phpcades/libphpcades.so $(php -i | grep 'extension_dir => ' | awk '{print $3}')/phpcades.so && \
     ln -s /opt/cprocsp/src/phpcades/libphpcades.so $(php -i | grep 'extension_dir => ' | awk '{print $3}')/libcppcades.so && \
     echo 'extension=phpcades.so' >> /etc/php/7.2/cli/php.ini
-    
 # Запускаю php-fpm:
 
-RUN apt install php-fpm && mkdir /run/php && service php7.2-fpm start && chmod -R a+x /run/php
+# RUN apt install php-fpm && mkdir /run/php && service php7.2-fpm start && chmod -R a+x /run/php
+RUN mkdir /run/php && chmod -R a+x /run/php
+# CMD ["sudo", "service", "php7.2-fpm", "start"]
 
-CMD ["sudo", "service", "php7.2-fpm", "start"]
-
-ENTRYPOINT ["sudo", "service", "php7.2-fpm", "start"]
+# ENTRYPOINT ["sudo", "service", "php7.2-fpm", "start"]
 
 # USER user
 
-# CMD ["php7.2-fpm","-F"]
+CMD ["sudo","/etc/init.d/php7.2-fpm","start"]
 
 
     # chmod 666 /var/log/php7.2-fpm.log && service php7.2-fpm start
@@ -82,7 +78,8 @@ ENTRYPOINT ["sudo", "service", "php7.2-fpm", "start"]
 
 # USER user
 
-EXPOSE 8888
+EXPOSE 9000
 
 # Проверка:
 # php --re php_CPCSP
+# service php7.2-fpm status
